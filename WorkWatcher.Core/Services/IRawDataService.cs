@@ -8,5 +8,7 @@ namespace Lorenzo.WorkWatcher.Core.Services
         IEnumerable<RawData> GetAll();
 
         int InserBulk(IEnumerable<RawData> data);
+
+        bool Truncate();
     }
 }

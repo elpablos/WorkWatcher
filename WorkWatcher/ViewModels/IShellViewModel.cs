@@ -9,6 +9,8 @@ namespace Lorenzo.WorkWatcher.ViewModels
         ICommand StartCommand { get; }
         ICommand StopCommand { get; }
         ICommand TickCommand { get; }
+        ICommand TestCommand { get; }
+        ICommand DetailCommand { get; }
 
         void LoadData();
         void ClosingWindow();

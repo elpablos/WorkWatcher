@@ -10,10 +10,12 @@ namespace Lorenzo.WorkWatcher.Core.DbModels
 
         public string ProcessName { get; set; }
 
-        public DateTime DateCreated { get; set; }
-
         public string WindowTitle { get; set; }
 
         public string Description { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateFinished { get; set; }
     }
 }

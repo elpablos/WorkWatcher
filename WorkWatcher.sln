@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWatcher", "WorkWatcher\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWatcher.Core", "WorkWatcher.Core\WorkWatcher.Core.csproj", "{12FFDD7D-CE4A-41A3-B0C5-FE2CDA843F43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkWatcher.Console", "WorkWatcher.Console\WorkWatcher.Console.csproj", "{F77E9067-44E4-4139-98CA-39BF7D42772A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{12FFDD7D-CE4A-41A3-B0C5-FE2CDA843F43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12FFDD7D-CE4A-41A3-B0C5-FE2CDA843F43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12FFDD7D-CE4A-41A3-B0C5-FE2CDA843F43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77E9067-44E4-4139-98CA-39BF7D42772A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77E9067-44E4-4139-98CA-39BF7D42772A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77E9067-44E4-4139-98CA-39BF7D42772A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77E9067-44E4-4139-98CA-39BF7D42772A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

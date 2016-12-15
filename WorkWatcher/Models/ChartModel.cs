@@ -4,13 +4,10 @@ using System;
 
 namespace Lorenzo.WorkWatcher.Models
 {
-    /// <summary>
-    /// Model hlavniho okna
-    /// </summary>
-    public class ShellModel : BaseModel
+    public class ChartModel : BaseModel
     {
-        private SortableBindingList<ShellListItemModel> _Items;
-        public SortableBindingList<ShellListItemModel> Items
+        private SortableBindingList<ChartItemModel> _Items;
+        public SortableBindingList<ChartItemModel> Items
         {
             get { return _Items; }
             set
@@ -20,8 +17,8 @@ namespace Lorenzo.WorkWatcher.Models
             }
         }
 
-        private ShellListItemModel _SelectedItem;
-        public ShellListItemModel SelectedItem
+        private ChartItemModel _SelectedItem;
+        public ChartItemModel SelectedItem
         {
             get { return _SelectedItem; }
             set
@@ -31,13 +28,13 @@ namespace Lorenzo.WorkWatcher.Models
             }
         }
 
-        private SortableBindingList<GraphItemModel> _GroupItems;
-        public SortableBindingList<GraphItemModel> GroupItems
+        private DateTime _DateActual;
+        public DateTime DateActual
         {
-            get { return _GroupItems; }
+            get { return _DateActual; }
             set
             {
-                _GroupItems = value;
+                _DateActual = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -60,17 +57,6 @@ namespace Lorenzo.WorkWatcher.Models
             set
             {
                 _Labels = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        private DateTime _DateActual = DateTime.Now;
-        public DateTime DateActual
-        {
-            get { return _DateActual; }
-            set
-            {
-                _DateActual = value;
                 NotifyOfPropertyChange();
             }
         }

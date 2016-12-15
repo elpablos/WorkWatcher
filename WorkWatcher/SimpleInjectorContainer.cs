@@ -31,6 +31,12 @@ namespace Lorenzo.WorkWatcher
             container.Register<IWindowManager, WindowManager>(Lifestyle.Scoped);
 
             container.Register<IRawDataService, RawDataService>(Lifestyle.Scoped);
+            container.Register<IDataManager, DataManager>(Lifestyle.Scoped);
+
+            
+
+            container.Register<IChartViewModel, ChartViewModel>(Lifestyle.Scoped);
+            container.Register<IChartView, ChartView>(Lifestyle.Scoped);
             container.Register<IShellViewModel, ShellViewModel>(Lifestyle.Scoped);
             container.Register<IShellView, ShellView>(Lifestyle.Scoped);
 

@@ -1,4 +1,8 @@
-﻿using Lorenzo.WorkWatcher.ViewModels;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
+using Lorenzo.WorkWatcher.Common;
+using Lorenzo.WorkWatcher.Models;
+using Lorenzo.WorkWatcher.ViewModels;
 using System;
 using System.Windows.Forms;
 
@@ -13,11 +17,13 @@ namespace Lorenzo.WorkWatcher.Views
             InitializeComponent();
 
             ViewModel = viewModel;
-            this.ViewModelBindingSource.DataSource = viewModel.Model;
 
             this.Resize += MainWindow_Resize;
-            this.Text += " v" + Application.ProductVersion;
+            this.toolStripStatusVersion.Text = "v" + Application.ProductVersion;
+#if !DEBUG
             this.WindowState = FormWindowState.Minimized;
+            this.ShowInTaskbar = false;
+#endif  
             this.Load += ShellView_Load;
             this.FormClosing += ShellView_FormClosing;
             this.Shown += ShellView_Shown;
@@ -31,21 +37,96 @@ namespace Lorenzo.WorkWatcher.Views
 
             // tlacitko start
             ViewModel.StartCommand.CanExecuteChanged += (s, e) => btnStart.Enabled = ViewModel.StartCommand.CanExecute(null);
-            btnStart.Click += (s, e) => ViewModel.StartCommand.Execute(null);
+            btnStart.Click += (s, e) =>
+            {
+                using (var cursor = new WaitCursor())
+                {
+                    ViewModel.StartCommand.Execute(null);
+                }
+            };
 
             // tlacitko stop
             ViewModel.StopCommand.CanExecuteChanged += (s, e) => btnStop.Enabled = ViewModel.StopCommand.CanExecute(null);
-            btnStop.Click += (s, e) => ViewModel.StopCommand.Execute(null);
+            btnStop.Click += (s, e) =>
+            {
+                using (var cursor = new WaitCursor())
+                {
+                    ViewModel.StopCommand.Execute(null);
+                }
+            };
 
+            // tlacitko Test
+            ViewModel.TestCommand.CanExecuteChanged += (s, e) => btnFilter.Enabled = ViewModel.TestCommand.CanExecute(null);
+            btnFilter.Click += (s, e) =>
+            {
+                using (var cursor = new WaitCursor())
+                {
+                    ViewModel.TestCommand.Execute(null);
+                }
+            };
+
+            // filtr datum
+            datePickerDate.DataBindings.Add("Value", ViewModel.Model, "DateActual", false, DataSourceUpdateMode.OnPropertyChanged);
             // zpravy v gridu
             dataGridRows.AutoGenerateColumns = false;
-            dataGridRows.DataBindings.Add("DataSource", ViewModel.Model, "Items", true, DataSourceUpdateMode.OnPropertyChanged);
+            dataGridRows.DataBindings.Add("DataSource", ViewModel.Model, "Items", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            // data grafu v gridu
+            dataGridGraph.AutoGenerateColumns = false;
+            dataGridGraph.DataBindings.Add("DataSource", ViewModel.Model, "GroupItems", false, DataSourceUpdateMode.OnPropertyChanged);
 
             // spustim timer
             timerWatcher.Start();
+
+            // graf
+            chartWorking.DataBindings.Add("Series", ViewModel.Model, "SeriesCollection", false, DataSourceUpdateMode.OnPropertyChanged);
+            chartWorking.AxisY.Add(new Axis
+            {
+                Title = "Usage",
+                LabelFormatter = value => new DateTime((long)value * TimeSpan.TicksPerMillisecond).ToString("t")
+            });
+
+            // tooltip jen pro prave prohlizeny zaznam, legenda dole
+            ((DefaultTooltip)chartWorking.DataTooltip).SelectionMode = TooltipSelectionMode.OnlySender;
+            chartWorking.LegendLocation = LegendLocation.Right;
+            chartWorking.DisableAnimations = true;
+
+            ViewModel.DetailCommand.CanExecuteChanged += (s, e) => chartWorking.Enabled = ViewModel.DetailCommand.CanExecute(null);
+            chartWorking.DataClick += (s, e) =>
+            {
+                var asPixels = chartWorking.Base.ConvertToPixels(e.AsPoint());
+                ViewModel.DetailCommand.Execute(new GraphDetailModel {
+                    X = e.X, // asPixels.X,
+                    Y = e.Y //  asPixels.Y
+                });
+            };
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Labels")
+            {
+                chartWorking.AxisX.Clear();
+                chartWorking.AxisX.Add(new Axis
+                {
+                    Title = "Date",
+                    Labels = ViewModel.Model.Labels, // poruseni bindingu
+                    Separator = DefaultAxes.CleanSeparator,
+                });
+            }
         }
 
         #region Window events
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.WindowState = FormWindowState.Minimized;
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
 
         /// <summary>
         /// Ukoncovani okna
@@ -64,8 +145,8 @@ namespace Lorenzo.WorkWatcher.Views
         /// <param name="args"></param>
         private void ShellView_Load(object sender, EventArgs args)
         {
+            ViewModel.Model.PropertyChanged += Model_PropertyChanged;
             ViewModel.LoadData();
-
             InicializingBindings();
         }
 
@@ -101,6 +182,7 @@ namespace Lorenzo.WorkWatcher.Views
             else if (FormWindowState.Normal == WindowState)
             {
                 WatcherNotifyIcon.Visible = false;
+                this.ShowInTaskbar = true;
             }
         }
 

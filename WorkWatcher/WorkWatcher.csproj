@@ -87,8 +87,15 @@
     <Compile Include="Common\ICommandManager.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SortableBindingList.cs" />
+    <Compile Include="Common\WaitCursor.cs" />
+    <Compile Include="Models\ChartItemModel.cs" />
+    <Compile Include="Models\ChartModel.cs" />
+    <Compile Include="Models\GraphDetailModel.cs" />
+    <Compile Include="Models\GraphItemModel.cs" />
     <Compile Include="Models\ShellListItemModel.cs" />
     <Compile Include="SimpleInjectorContainer.cs" />
+    <Compile Include="ViewModels\ChartViewModel.cs" />
+    <Compile Include="ViewModels\IChartViewModel.cs" />
     <Compile Include="ViewModels\IShellViewModel.cs" />
     <Compile Include="Views\ChartView.cs">
       <SubType>Form</SubType>
@@ -96,6 +103,7 @@
     <Compile Include="Views\ChartView.Designer.cs">
       <DependentUpon>ChartView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\IChartView.cs" />
     <Compile Include="Views\IShellView.cs" />
     <Compile Include="Views\ShellView.cs">
       <SubType>Form</SubType>
